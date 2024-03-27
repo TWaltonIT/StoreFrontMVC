@@ -235,7 +235,6 @@
     <Content Remove="wwwroot\img\sd\c3.jpg" />
     <Content Remove="wwwroot\img\sd\c4.jpg" />
     <Content Remove="wwwroot\img\sd\c5.jpg" />
-    <Content Remove="wwwroot\index.html" />
     <Content Remove="wwwroot\js\countdown.js" />
     <Content Remove="wwwroot\js\gmaps.min.js" />
     <Content Remove="wwwroot\js\ion.rangeSlider.js" />
@@ -573,7 +572,6 @@
     <None Include="wwwroot\img\sd\c3.jpg" />
     <None Include="wwwroot\img\sd\c4.jpg" />
     <None Include="wwwroot\img\sd\c5.jpg" />
-    <None Include="wwwroot\index.html" />
     <None Include="wwwroot\js\.DS_Store" />
     <None Include="wwwroot\js\countdown.js" />
     <None Include="wwwroot\js\gmaps.min.js" />

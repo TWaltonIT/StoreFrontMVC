@@ -12,9 +12,6 @@ namespace StoreFront.DATA.EF.Models
     [ModelMetadataType(typeof(CategoryMetadata))]
     public partial class Category { }
 
-    [ModelMetadataType(typeof(ChakraNatureMetadata))]
-    public partial class ChakraNature { }
-
     [ModelMetadataType(typeof(OrderMetadata))]
     public partial class Order { }
 
