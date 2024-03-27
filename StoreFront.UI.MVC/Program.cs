@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StoreFront.UI.MVC.Data;
 using System.Data;
+using StoreFront.DATA.EF.Models;
 
 namespace StoreFront.UI.MVC
 {
@@ -15,6 +16,11 @@ namespace StoreFront.UI.MVC
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            builder.Services.AddDbContext<KonohaExpressContext>(options =>
+                options.UseSqlServer(connectionString));
+
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)

@@ -695,6 +695,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StoreFront.DATA.EF\StoreFront.DATA.EF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="wwwroot\prepros-6.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
