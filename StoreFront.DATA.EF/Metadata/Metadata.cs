@@ -22,20 +22,6 @@ namespace StoreFront.DATA.EF.Models
         public string? CategoryDescription { get; set; }
     }
 
-    public class ChakraNatureMetadata
-    {
-        public int NatureId { get; set; }
-
-        [Required]
-        [Display(Name = "Chakra Nature")]
-        [StringLength(50)]
-        public string NatureName { get; set; } = null!;
-
-        [Display(Name = "Description")]
-        [StringLength(500)]
-        public string? NatureDescription { get; set; }
-    }
-
     public class OrderMetadata
     {
         public int OrderId { get; set; }
