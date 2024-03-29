@@ -1,84 +1,78 @@
 ﻿@model StoreFront.DATA.EF.Models.Product
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.ProductName + "Details";
 }
 
-<h1>Details</h1>
+<section class="product_section gray-section layout_padding pb-4 pt-4 mb-4 text-center">
+    <div class="heading_container heading_center">
+        <h2>
+            @Model.ProductName <span>Details</span>
+        </h2>
+    </div>
+</section>
 
 <div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductDescription)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductDescription)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ItemsInStock)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ItemsInStock)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ItemsOnOrder)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ItemsOnOrder)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDiscontinued)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDiscontinued)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductImage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductImage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nature)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nature.NatureName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductStatus.ProductStatusName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Supplier)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Supplier.SupplierName)
-        </dd>
-    </dl>
+    <div class="row mb-3">
+        @* <h4>Product</h4>
+        <hr /> *@
+        <div class="col-md-6 text-center">
+            <img src="~/images/@Model.ProductImage" alt="@Model.ProductName" longdesc="@Model.ProductDescription" class="img-fluid" />
+            <p class="text-info mt-3">
+                @Html.DisplayFor(model => model.ProductDescription)
+            </p>
+        </div>
+        <div class="col-md-4 offset-md-1 align-middle">
+            <p class="h3">
+                <strong>@Html.DisplayNameFor(model => model.ProductPrice):</strong>
+                @Html.DisplayFor(model => model.ProductPrice)
+            </p>
+            <p class="h3">
+                <strong>@Html.DisplayNameFor(model => model.IsDiscontinued)</strong>
+                @{
+                    string isDiscontinued = Model.IsDiscontinued ? "Yes" : "No";
+                }
+                <span>@isDiscontinued</span>
+            </p>
+            <p class="h3">
+                <strong>@Html.DisplayNameFor(model => model.ItemsInStock):</strong>
+                @Html.DisplayFor(model => model.ItemsInStock)
+            </p>
+            <p class="h3">
+                <strong>@Html.DisplayNameFor(model => model.Category.CategoryName):</strong>
+                @Html.DisplayFor(model => model.Category.CategoryName)
+            </p>
+            @if (User.IsInRole("Admin"))
+            {
+                <p class="h3">
+                    <strong>@Html.DisplayNameFor(model => model.Supplier.SupplierName):</strong>
+                @Html.DisplayFor(model => model.Supplier.SupplierName)
+            </p>
+            }
+        </div>
+
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ProductId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+        <div class="form-group p-4 text-center">
+    @if (User.IsInRole("Admin")) 
+        {
+        <input type="submit" value="Edit" class="btn btn-primary" />
+        }
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 </div>

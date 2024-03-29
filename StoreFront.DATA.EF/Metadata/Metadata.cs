@@ -24,6 +24,7 @@ namespace StoreFront.DATA.EF.Models
 
     public class OrderMetadata
     {
+        [Display(Name = "Order ID")]
         public int OrderId { get; set; }
         public string UserId { get; set; } = null!;
 
@@ -79,7 +80,11 @@ namespace StoreFront.DATA.EF.Models
         [Range(0, short.MaxValue)]
         [Required]
         public short ItemsOnOrder { get; set; }
+
+        [Display(Name = "Category")]
         public int? CategoryId { get; set; }
+
+        [Display(Name = "Supplier")]
         public int? SupplierId { get; set; }
 
         [Display(Name ="Discontinued?")]
@@ -143,5 +148,7 @@ namespace StoreFront.DATA.EF.Models
         [Required]
         public string Village { get; set; } = null!;
     }
+
+
 
 }

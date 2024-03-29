@@ -22,6 +22,7 @@ namespace StoreFront.UI.MVC.Controllers
         }
 
         // GET: Categories
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
               return _context.Categories != null ? 
@@ -30,6 +31,7 @@ namespace StoreFront.UI.MVC.Controllers
         }
 
         // GET: Categories/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Categories == null)

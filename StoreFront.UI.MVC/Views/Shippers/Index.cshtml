@@ -6,9 +6,16 @@
 
 @* <h1>Index</h1> *@
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<section class="product_section gray-section layout_padding pb-4 pt-4 mb-4 text-center">
+    <div class="heading_container heading_center">
+        <h2>
+            Our <span>Shippers</span>
+        </h2>
+        <p align="center">
+            <a asp-action="Create">Create New</a>
+        </p>
+    </div>
+</section>
 <table class="table">
     <thead>
         <tr>
@@ -22,21 +29,22 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.ShipperId">
-                    @Html.DisplayFor(modelItem => item.ShipperName)
-                </a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipperVillage)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ShipperId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.ShipperId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.ShipperId">
+                        @Html.DisplayFor(modelItem => item.ShipperName)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipperVillage)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ShipperId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ShipperId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

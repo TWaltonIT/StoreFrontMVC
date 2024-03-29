@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> signInManager;
+
+<!DOCTYPE html>
 <html lang="zxx" class="no-js">
 
 <head>
@@ -33,7 +36,7 @@
 </head>
 
 <!-- Start Header Area -->
-<header class="header_area">
+<header class="header_area sticky-header">
 	<div class="main_menu">
 		<nav class="navbar navbar-expand-lg navbar-light main_box">
 			<div class="container">
@@ -50,9 +53,6 @@
 				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 					<ul class="nav navbar-nav menu_nav ml-auto">
 						<li class="nav-item active"><a class="nav-link" href="~/">Home</a></li>
-						<li class="nav-item">
-							<a class="nav-link" asp-action="Index" asp-controller="Products">Shop</a>
-						</li>
 						<li class="nav-item submenu dropdown">
 							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 							   aria-expanded="false">Blog</a>
@@ -72,21 +72,40 @@
 							</ul>
 						</li> *@
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-					</ul>
-
-					<li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">Admin <span class="nav-label"><span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a asp-action="ListUsers" asp-controller="Administration">Users</a></li>
-							<li><a asp-action="ListRoles" asp-controller="Administration">Roles</a></li>
-							<li><a asp-action="Index" asp-controller="Categories">Categories</a></li>
-							<li><a asp-action="Index" asp-controller="Orders">Orders</a></li>
-                            <li><a asp-action="Index" asp-controller="Products">Products</a></li>
-                            <li><a asp-action="Index" asp-controller="Shippers">Shippers</a></li>
-                            <li><a asp-action="Index" asp-controller="Suppliers">Suppliers</a></li>
-						</ul>
+					
+                    @if (User.IsInRole("Admin")) 
+					{ 
+					<li class="nav-item submenu dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+							<ul class="dropdown-menu">
+								<li class="nav-item"><a asp-action="ListUsers" asp-controller="Administration" class="nav-link">Users</a></li>
+								<li class="nav-item"><a asp-action="ListRoles" asp-controller="Administration" class="nav-link">Roles</a></li>
+								<li class="nav-item"><a asp-action="Index" asp-controller="Categories" class="nav-link">Categories</a></li>
+								<li class="nav-item"><a asp-action="Index" asp-controller="Orders" class="nav-link">Orders</a></li>
+								<li class="nav-item"><a asp-action="Index" asp-controller="Products" class="nav-link">Products</a></li>
+								<li class="nav-item"><a asp-action="Index" asp-controller="Shippers" class="nav-link">Shippers</a></li>
+								<li class="nav-item"><a asp-action="Index" asp-controller="Suppliers" class="nav-link">Suppliers</a></li>
+							</ul>
 					</li>
+                    }
+					else 
+					{
+					<li class="nav-item dropdown">
+						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shop</a>
+							<ul class="dropdown-menu">
+									<li class="nav-item"><a asp-action="Index" asp-controller="Categories" class="nav-link">Categories</a></li>
+									<li class="nav-item"><a asp-action="Index" asp-controller="Products" class="nav-link">Products</a></li>
 
+									@if (signInManager.IsSignedIn(User))
+									{
+										<li class="nav-item">
+											<a class="nav-link" asp-action="Index" asp-controller="Orders">Orders</a>
+										</li>
+									}
+							</ul>
+					</li>
+                    }
+                    </ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
 						<li class="nav-item">

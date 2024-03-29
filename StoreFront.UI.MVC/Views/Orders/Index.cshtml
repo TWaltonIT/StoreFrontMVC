@@ -6,18 +6,36 @@
 
 @* <h1>Index</h1> *@
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<section class="product_section gray-section layout_padding pb-4 pt-4 mb-4 text-center">
+    <div class="heading_container heading_center">
+        <h2>
+            All <span>Orders</span>
+        </h2>
+        <p align="center">
+            @if (User.IsInRole("Admin"))
+            {
+                <span>
+                    <a asp-action="Create" class="btn btn-success">Create New Order</a>
+                </span>
+            }
+        </p>
+    </div>
+</section>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.OrderDate)
+                @Html.DisplayNameFor(model => model.OrderId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ShipToName)
+                @Html.DisplayNameFor(model => model.OrderDate)
             </th>
+        @if (User.IsInRole("Admin"))
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.ShipToName)
+            </th>   
+        }
             <th>
                 @Html.DisplayNameFor(model => model.ShipVillage)
             </th>
@@ -25,42 +43,51 @@
                 @Html.DisplayNameFor(model => model.ShipDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Shipper)
+                @Html.DisplayNameFor(model => model.Shipper.ShipperName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+        @foreach (var item in Model)
+        {
+            <tr>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.OrderId">
-                        @Html.DisplayFor(modelItem => item.OrderDate)
+                        @Html.DisplayFor(modelItem => item.OrderId)
                     </a>
                 </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipToName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipVillage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Shipper.ShipperName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.UserId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(model => item.OrderDate)
+                </td>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <td>
+                    @Html.DisplayFor(model => item.ShipToName)
+                </td>
+            }
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipToName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipVillage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Shipper.ShipperName)
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
     </tbody>
 </table>

@@ -26,4 +26,6 @@ namespace StoreFront.DATA.EF.Models
 
     [ModelMetadataType(typeof(UserDetailMetadata))]
     public partial class UserDetail { }
+
+    
 }

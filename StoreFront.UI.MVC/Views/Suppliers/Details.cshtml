@@ -1,15 +1,22 @@
 ﻿@model StoreFront.DATA.EF.Models.Supplier
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.SupplierName + " Details";
 }
 
-<h1>Details</h1>
+<section class="product_section gray-section layout_padding pb-4 pt-4 mb-4 text-center">
+    <div class="heading_container heading_center">
+        <h2>
+            @Model.SupplierName Details
+        </h2>
+    </div>
+</section>
+<br />
+<br />
 
 <div>
-    <h4>Supplier</h4>
-    <hr />
-    <dl class="row">
+
+    <dl class="row col-md-8 offset-md-4">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.SupplierName)
         </dt>
@@ -24,7 +31,15 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.SupplierId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<br />
+<br />
+<br />
+<br />
+<div class="form-group p-4 text-center">
+    <input type="submit" value="Edit" class="btn btn-primary" /> |
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </div>
+<br />
+<br />
+<br />
+<br />

@@ -1,17 +1,28 @@
 ﻿@model StoreFront.DATA.EF.Models.Product
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Add New Product";
 }
 
-<h1>Create</h1>
+@* <h1>Create</h1>
 
 <h4>Product</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<hr /> *@
+
+
+<section class="product_section gray-section layout_padding pb-4 pt-4 mb-4 text-center">
+    <div class="heading_container heading_center">
+        <h2>
+            Create <span>Product</span>
+        </h2>
+    </div>
+</section>
+
+<div class="row mb-3">
+    <div class="col-md-8 offset-md-2">
+        <form asp-action="Edit" class="contact_form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductId" />
             <div class="form-group">
                 <label asp-for="ProductName" class="control-label"></label>
                 <input asp-for="ProductName" class="form-control" />
@@ -37,41 +48,50 @@
                 <input asp-for="ItemsOnOrder" class="form-control" />
                 <span asp-validation-for="ItemsOnOrder" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="SupplierId" class="control-label"></label>
-                <select asp-for="SupplierId" class ="form-control" asp-items="ViewBag.SupplierId"></select>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDiscontinued" /> @Html.DisplayNameFor(model => model.IsDiscontinued)
-                </label>
-            </div>
+
             <div class="form-group">
                 <label asp-for="ProductImage" class="control-label"></label>
                 <input asp-for="ProductImage" class="form-control" />
                 <span asp-validation-for="ProductImage" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="NatureId" class="control-label"></label>
-                <select asp-for="NatureId" class ="form-control" asp-items="ViewBag.NatureId"></select>
+            <div class="form-group my-3">
+                <label asp-for="CategoryId" class="control-label d-block"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ProductStatusId" class="control-label"></label>
-                <select asp-for="ProductStatusId" class ="form-control" asp-items="ViewBag.ProductStatusId"></select>
+            <br />
+            <div class="form-group my-3">
+                <label asp-for="SupplierId" class="control-label d-block"></label>
+                <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+                <span asp-validation-for="SupplierId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <br />
+
+            <div class="form-group my-3">
+                <label asp-for="NatureId" class="control-label d-block"></label>
+                <select asp-for="NatureId" class="form-control" asp-items="ViewBag.NatureId"></select>
+                <span asp-validation-for="NatureId" class="text-danger"></span>
             </div>
+            <br />
+            <div class="form-group my-3">
+                <label asp-for="ProductStatusId" class="control-label d-block"></label>
+                <select asp-for="ProductStatusId" class="form-control" asp-items="ViewBag.ProductStatusId"></select>
+                <span asp-validation-for="ProductStatusId" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group form-check my-3">
+                <label class="form-check-label d-block">
+                    <input class="form-check-input" asp-for="IsDiscontinued" /> @Html.DisplayNameFor(model => model.IsDiscontinued)
+                </label>
+            </div>
+
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="form-group p-4 text-center">
+    <input type="submit" value="Create" class="btn btn-primary" /> |
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </div>
 
 @section Scripts {

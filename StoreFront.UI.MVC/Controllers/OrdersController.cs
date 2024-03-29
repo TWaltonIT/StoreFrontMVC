@@ -21,6 +21,7 @@ namespace StoreFront.UI.MVC.Controllers
         }
 
         // GET: Orders
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var konohaExpressContext = _context.Orders.Include(o => o.Shipper).Include(o => o.User);
@@ -28,6 +29,7 @@ namespace StoreFront.UI.MVC.Controllers
         }
 
         // GET: Orders/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Orders == null)

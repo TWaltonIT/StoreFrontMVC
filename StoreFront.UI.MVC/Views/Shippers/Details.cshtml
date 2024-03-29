@@ -1,30 +1,44 @@
 ﻿@model StoreFront.DATA.EF.Models.Shipper
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.ShipperName + " Details";
 }
 
-<h1>Details</h1>
-
+<section class="product_section gray-section layout_padding pb-4 pt-4 mb-4 text-center">
+    <div class="heading_container heading_center">
+        <h2>
+            @Model.ShipperName Details
+        </h2>
+    </div>
+</section>
+<br />
+<br />
 <div>
-    <h4>Shipper</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
+
+    <dl class="row col-md-6 offset-md-4">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ShipperName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ShipperName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ShipperVillage)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ShipperVillage)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ShipperId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<br />
+<br />
+<br />
+<br />
+<div class="form-group p-4 text-center">
+    <input type="submit" value="Edit" class="btn btn-primary" /> |
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </div>
+<br />
+<br />
+<br />
+<br />

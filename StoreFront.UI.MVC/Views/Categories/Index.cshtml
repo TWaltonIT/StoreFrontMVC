@@ -6,10 +6,23 @@
 
 @* <h1>Categories</h1> *@
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<section class="product_section gray-section layout_padding pb-4 pt-4 mb-4 text-center">
+    <div class="heading_container heading_center">
+        <h2>
+            Categories
+        </h2>
+        <p align="center">
+            @if (User.IsInRole("Admin"))
+            {
+                <span>
+                    <a asp-action="Create" class="btn btn-success">Create New Category</a>
+                </span>
+            }
+        </p>
+    </div>
+</section>
+
+<table class="table table-hover table-striped">
     <thead>
         <tr>
             <th>
@@ -32,10 +45,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryDescription)
             </td>
+        @if (User.IsInRole("Admin"))
+        {
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a> |
                 <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
             </td>
+        }
         </tr>
 }
     </tbody>

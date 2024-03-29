@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using StoreFront.DATA.EF.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StoreFront.UI.MVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ProductsController : Controller
     {
         private readonly KonohaExpressContext _context;
@@ -19,13 +21,38 @@ namespace StoreFront.UI.MVC.Controllers
         }
 
         // GET: Products
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var konohaExpressContext = _context.Products.Include(p => p.Category).Include(p => p.Nature).Include(p => p.ProductStatus).Include(p => p.Supplier);
-            return View(await konohaExpressContext.ToListAsync());
+            var products =
+                _context.Products.Where(p => !p.IsDiscontinued)//SELECT * FROM PRODUCTS WHERE IsDiscontinued != true
+                .Include(p => p.Category)//Similar to a JOIN on the Category table
+                .Include(p => p.Supplier)//Similar to a JOIN on the Supplier table
+                .Include(p => p.OrderProducts)//Similar to a JOIN on the OrderProducts table
+                .Include(p => p.Nature)
+                .Include(p => p.ProductStatus);
+            
+
+            return View(await products.ToListAsync());
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> TiledProducts()
+        {
+            var products =
+                _context.Products.Where(p => !p.IsDiscontinued)//SELECT * FROM PRODUCTS WHERE IsDiscontinued != true
+                .Include(p => p.Category)//Similar to a JOIN on the Category table
+                .Include(p => p.Supplier)//Similar to a JOIN on the Supplier table
+                .Include(p => p.OrderProducts)//Similar to a JOIN on the OrderProducts table
+                .Include(p => p.Nature)
+                .Include(p => p.ProductStatus);
+
+
+            return View(await products.ToListAsync());
         }
 
         // GET: Products/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Products == null)
@@ -78,6 +105,7 @@ namespace StoreFront.UI.MVC.Controllers
         }
 
         // GET: Products/Edit/5
+        
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Products == null)

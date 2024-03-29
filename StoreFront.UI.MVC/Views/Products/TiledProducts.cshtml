@@ -1,0 +1,62 @@
+﻿@model IEnumerable<StoreFront.DATA.EF.Models.Product>
+
+@{
+    ViewData["Title"] = "Tiled Products";
+}
+
+<section class="product_section layout_padding">
+    <div class="single-product-slider">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <div class="section-title">
+                        <h1>Our Products</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p align="center">
+            @if (User.IsInRole("Admin"))
+            {
+                <span>
+                    <a asp-action="Create" class="btn btn-success">Create New Product</a>
+                </span>
+            }
+            <a asp-action="Index" class="btn btn-primary mx-4">Table View</a>
+        </p>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 col-md-6">
+                    <div class="single-product">
+                        <img class="img-fluid" src="~/img/product/e-p1.png" alt="@item.ProductName">
+                        <div class="product-details">
+                            <h6>
+
+                                <a asp-action="Details" asp-route-id="@item.ProductId" class="option1">
+                                    @item.ProductName
+                                </a>
+                            </h6>
+                            <div class="price">
+                                <h6>
+                                    @item.ProductPrice
+                                </h6>
+                            </div>
+                            <div class="prd-bottom">
+                                <a href="javascript:void(0)" class="social-info">
+                                    <span class="ti-bag"></span>
+                                    <p class="hover-text">Add To Bag</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+            <div class="btn btn-light text-center">
+                <a asp-action="Index">
+                    View All products
+                </a>
+            </div>
+</section>
