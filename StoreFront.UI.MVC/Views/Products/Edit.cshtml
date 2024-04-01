@@ -1,7 +1,7 @@
 ﻿@model StoreFront.DATA.EF.Models.Product
 
 @{
-    ViewData["Title"] = "Edit" + Model.ProductName;
+    ViewData["Title"] = "Edit " + Model.ProductName;
 }
 
 @* <h1>Edit</h1>
@@ -16,9 +16,11 @@
     </div>
 </section>
 
+
+
 <div class="row mb-3">
     <div class="col-md-8 offset-md-2">
-        <form asp-action="Edit" class="contact_form">
+        <form asp-action="Edit" class="contact_form" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ProductId" />
             <div class="form-group">
@@ -26,6 +28,7 @@
                 <input asp-for="ProductName" class="form-control" />
                 <span asp-validation-for="ProductName" class="text-danger"></span>
             </div>
+            <input type="hidden" asp-for="ProductImage" />
             <div class="form-group">
                 <label asp-for="ProductPrice" class="control-label"></label>
                 <input asp-for="ProductPrice" class="form-control" />
@@ -49,7 +52,8 @@
             
             <div class="form-group">
                 <label asp-for="ProductImage" class="control-label"></label>
-                <input asp-for="ProductImage" class="form-control" />
+                @* <input asp-for="ProductImage" class="form-control" /> *@
+                <input type="file" asp-for="Image" class="form-control text-center" />
                 <span asp-validation-for="ProductImage" class="text-danger"></span>
             </div>
             <div class="form-group my-3">

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace StoreFront.DATA.EF.Models
 {
@@ -16,7 +18,11 @@ namespace StoreFront.DATA.EF.Models
     public partial class Order { }
 
     [ModelMetadataType(typeof(ProductMetadata))]
-    public partial class Product { }
+    public partial class Product 
+    {
+        [NotMapped]
+        public IFormFile? Image { get; set; }
+    }
 
     [ModelMetadataType(typeof(ShipperMetadata))]
     public partial class Shipper { }
