@@ -83,7 +83,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ProductImage)
+                        <img src="~/img/t_@item.ProductImage" class="img-fluid" alt="@item.ProductName" />
                     </td>
                     <td>
                         <a asp-action="Details" asp-route-id="@item.ProductId">
