@@ -56,7 +56,7 @@
         <div class="form-group p-4 text-center">
     @if (User.IsInRole("Admin")) 
         {
-        <input type="submit" value="Edit" class="btn btn-primary" />
+            <span><a asp-action="Edit" asp-route-id="@Model.ProductId">Edit</a> |</span>
         }
         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
     </div>

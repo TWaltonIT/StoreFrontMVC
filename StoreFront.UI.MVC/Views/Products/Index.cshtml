@@ -138,6 +138,13 @@
                 }
                     </tr>
             }
-                </tbody>
-            </table>
-            </section>
+        </tbody>
+    </table>
+</section>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            //Update the selector to target the element with the table class
+            $('.table').DataTable();
+        });</script>
+}

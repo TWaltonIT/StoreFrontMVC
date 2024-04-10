@@ -33,6 +33,10 @@
 	<link rel="stylesheet" href="~/css/ion.rangeSlider.skinFlat.css" />
 	<link rel="stylesheet" href="~/css/magnific-popup.css">
 	<link rel="stylesheet" href="~/css/main.css">
+	<!-- Paged List -->
+	<link href="~/css/PagedList.css" rel="stylesheet" />
+	<!-- Stylesheet for DataTables jQuery Plugin-->
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
 </head>
 
 <!-- Start Header Area -->
@@ -64,7 +68,7 @@
 							</ul>
 						</li> *@
 						<li class="nav-item"><a class="nav-link" asp-action="Contact" asp-controller="Home">Contact</a></li>
-					ww
+					
                     @if (User.IsInRole("Admin")) 
 					{ 
 					<li class="nav-item submenu dropdown">
@@ -99,7 +103,7 @@
                     }
                     </ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                        <li class="nav-item"><a asp-action="Index" asp-controller="ShoppingCart" class="nav-link"><span class="fa fa-shopping-bag pl-2"></span></a></li>
 						<li class="nav-item">
 							<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
                         </li>
@@ -214,13 +218,15 @@
 	<script src="~/js/jquery.nice-select.min.js"></script>
 	<script src="~/js/jquery.sticky.js"></script>
 	<script src="~/js/nouislider.min.js"></script>
-	<script src="~/js/countdown.js"></script>
+	@* <script src="~/js/countdown.js"></script> *@
 	<script src="~/js/jquery.magnific-popup.min.js"></script>
 	<script src="~/js/owl.carousel.min.js"></script>
+	<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
 	<!--gmaps Js-->
-	<script src="~/https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
-	<script src="~/js/gmaps.min.js"></script>
+	@* <script src="~/https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+	<script src="~/js/gmaps.min.js"></script> *@
 	<script src="~/js/main.js"></script>
+
     
 	@RenderSection("scripts", false)
 	

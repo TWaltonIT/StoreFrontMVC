@@ -1,4 +1,6 @@
-﻿@model IEnumerable<StoreFront.DATA.EF.Models.Product>
+﻿@model IPagedList<StoreFront.DATA.EF.Models.Product>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
 
 @{
     ViewData["Title"] = "Tiled Products";
@@ -25,9 +27,30 @@
             <a asp-action="Index" class="btn btn-primary mx-4">Table View</a>
         </p>
         <div class="row">
+
+            <div class="col-sm-6 offset-sm-3">
+                <form asp-action="TiledProducts" method="get">
+
+                    <label for="categoryId" class="control-label d-block text-center">Filter by Category</label>
+                    <select name="categoryId" class="form-control text-center mb-3" asp-items="ViewBag.CategoryId">
+                        <option value="0">[Choose a Category]</option>
+                    </select>
+                    <input name="searchTerm" class="form-control text-center mb-3" placeholder="Search Gadgets" />
+                    <input type="submit" value="Go" class="btn btn-primary text-center w-50 d-block" />
+
+                </form>
+
+                @if (ViewBag.NbrResults != null)
+                {
+                    <p class="mt-5 p-2 alert alert-warning text-center">
+                        Showing @ViewBag.NbrResults result@(ViewBag.NbrResults == 1 ? "" : "s") for '@ViewBag.SearchTerm'.
+                    </p>
+                }
+            </div>
+
             @foreach (var item in Model)
             {
-                <div class="col-lg-3 col-md-6">
+                <div class="col-sm-6 col-md-4 col-lg-4">
                     <div class="single-product">
                         <img class="img-fluid" src="~/img/product/e-p1.png" alt="@item.ProductName">
                         <div class="product-details">
@@ -39,11 +62,12 @@
                             </h6>
                             <div class="price">
                                 <h6>
-                                    @item.ProductPrice
+                                    @Html.DisplayFor(modelItem => item.ProductPrice)
                                 </h6>
                             </div>
                             <div class="prd-bottom">
-                                <a href="javascript:void(0)" class="social-info">
+                                    
+                                <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.ProductId" class="social-info">
                                     <span class="ti-bag"></span>
                                     <p class="hover-text">Add To Bag</p>
                                 </a>
@@ -53,10 +77,16 @@
                 </div>
             }
         </div>
-    </div>
-            <div class="btn btn-light text-center">
-                <a asp-action="Index">
-                    View All products
-                </a>
+        <div class="row mt-5">
+            <div class="w-50 mx-auto text-center">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                <div class="w-100">
+                    @Html.PagedListPager(
+                             Model,
+                             page => Url.Action("TiledProducts", new { page, searchTerm = ViewBag.SearchTerm, categoryId = ViewBag.CategoryId })
+                    )
+                </div>
             </div>
+        </div>
+    </div>
 </section>

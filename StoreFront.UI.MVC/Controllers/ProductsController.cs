@@ -9,6 +9,7 @@ using StoreFront.DATA.EF.Models;
 using Microsoft.AspNetCore.Authorization;
 using StoreFront.UI.MVC.Utilities;
 using System.Drawing;
+using X.PagedList;
 
 namespace StoreFront.UI.MVC.Controllers
 {
@@ -42,18 +43,63 @@ namespace StoreFront.UI.MVC.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> TiledProducts()
+        public async Task<IActionResult> TiledProducts(string searchTerm, int categoryId = 0, int page = 1)
         {
-            var products =
-                _context.Products.Where(p => !p.IsDiscontinued)//SELECT * FROM PRODUCTS WHERE IsDiscontinued != true
-                .Include(p => p.Category)//Similar to a JOIN on the Category table
-                .Include(p => p.Supplier)//Similar to a JOIN on the Supplier table
-                .Include(p => p.OrderProducts)//Similar to a JOIN on the OrderProducts table
+
+            int pageSize = 6;
+
+            var products = _context.Products.Where(p => !p.IsDiscontinued)
+                .Include(p => p.Category)
+                .Include(p => p.Supplier)
+                .Include(p => p.OrderProducts)
                 .Include(p => p.Nature)
-                .Include(p => p.ProductStatus);
+                .Include(p => p.ProductStatus).ToList();
+
+            //SERVER SIDE FILTERING - STEP 08
+            #region Optional Category Filter
+
+            //Create a ViewData[] object to send a list of categories to the View
+            //This is similar to what gets scaffolded in Products/Create()
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+            ViewBag.Category = 0;
+
+            //At this point, we need to add int categoryId as a parameter to the TiledProducts action
+            if (categoryId != 0)
+            {
+                products = products.Where(p => p.CategoryId == categoryId).ToList();
+                ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", categoryId);
+                ViewBag.Category = categoryId;
+            }
 
 
-            return View(await products.ToListAsync());
+            #endregion
+
+            //SERVER SIDE FILTERING - STEP 07
+            #region Optional Search Filter
+
+            if (!String.IsNullOrEmpty(searchTerm))
+            {
+                //In these scopes, there *is* a search term
+                products = products.Where(p =>
+                p.ProductName.ToLower().Contains(searchTerm.ToLower()) ||
+                p.Category.CategoryName.ToLower().Contains(searchTerm.ToLower()) ||
+                p.Supplier.SupplierName.ToLower().Contains(searchTerm.ToLower()) ||
+                p.ProductDescription.ToLower().Contains(searchTerm.ToLower())).ToList();
+
+                //ViewBag for total # of results
+                ViewBag.NbrResults = products.Count;
+                //ViewBag to repeat the user's search term back to them
+                ViewBag.SearchTerm = searchTerm;
+            }
+            else
+            {
+                ViewBag.NbrResults = null;
+                ViewBag.SearchTerm = null;
+            }
+
+            #endregion
+
+            return View( products.ToPagedList(page , pageSize));
         }
 
         // GET: Products/Details/5

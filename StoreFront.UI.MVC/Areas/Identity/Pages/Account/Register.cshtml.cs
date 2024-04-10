@@ -16,8 +16,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using StoreFront.DATA.EF.Models;
 
 namespace StoreFront.UI.MVC.Areas.Identity.Pages.Account
 {
@@ -97,6 +99,21 @@ namespace StoreFront.UI.MVC.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+
+            [Required]
+            [StringLength(50)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; } = null!;
+
+            [Required]
+            [StringLength(50)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; } = null!;
+
+            [Required]
+            [StringLength(150)]
+            public string Village { get; set; }
         }
 
 
@@ -123,6 +140,29 @@ namespace StoreFront.UI.MVC.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
+
+                    #region Custom User Details - Creating a new UserDetails record in our DB
+
+                    //This GadgetStoreContext object is what we use to save the new UserDetail record to our DB
+                    //This is the same type of object that we use in our scaffolded controllers
+                    //Remember to add 'using GadgetStore.DATA.EF.Models
+                    KonohaExpressContext _context = new KonohaExpressContext();
+
+                    //Instantiate the UserDetail object that will be saved to the DB:
+                    UserDetail userDetail = new UserDetail()
+                    {
+                        UserId = userId,
+                        FirstName = Input.FirstName,
+                        LastName = Input.LastName,
+                        Village = Input.Village
+                    };
+
+                    _context.UserDetails.Add(userDetail);//Queue the record to be saved to the DB
+                    _context.SaveChanges();//Save the queued record to the DB
+
+                    //CUSTOM USER DETAILS - STEP 07
+
+                    #endregion
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -176,5 +216,25 @@ namespace StoreFront.UI.MVC.Areas.Identity.Pages.Account
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
+
+        //public SelectList SetVillages()
+        //{
+        //    // Hardcoded list of village names
+        //    List<string> villageNames = new List<string>
+        //    {
+        //        "Konohagakure",
+        //        "Sunagakure",
+        //        "Kirigakure",
+        //        "Kumogakure",
+        //        "Iwagakure"
+
+        //    };
+
+        //    // Creating SelectList from the list of village names
+        //    SelectList villagesSelectList = new SelectList(villageNames);
+
+        //    return villagesSelectList;
+
+        //}
     }
 }

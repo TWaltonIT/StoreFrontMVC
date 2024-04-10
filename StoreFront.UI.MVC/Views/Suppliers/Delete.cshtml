@@ -4,7 +4,13 @@
     ViewData["Title"] = "Delete " + Model.SupplierName;
 }
 
-<h1>Delete</h1>
+<section class="product_section gray-section layout_padding pb-4 pt-4 mb-4 text-center">
+    <div class="heading_container heading_center">
+        <h2>
+            Delete <span>Supplier</span>
+        </h2>
+    </div>
+</section>
 
 <h3 class="alert alert-danger">Are you sure you want to delete @Model.SupplierName? This action cannot be undone!</h3>
 <div class="row mb-3">
@@ -23,10 +29,6 @@
     </div>
 </div>
 
-</div>
-
-
-</div>
 
 <div class="p-4 text-center">
     <form asp-action="Delete">

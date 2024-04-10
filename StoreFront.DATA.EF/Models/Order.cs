@@ -15,11 +15,11 @@ namespace StoreFront.DATA.EF.Models
         public DateTime OrderDate { get; set; }
         public string ShipToName { get; set; } = null!;
         public string ShipVillage { get; set; } = null!;
-        public DateTime ShipDate { get; set; }
+        public DateTime? ShipDate { get; set; }
         public int ShipperId { get; set; }
 
-        public virtual Shipper Shipper { get; set; } = null!;
-        public virtual UserDetail User { get; set; } = null!;
+        public virtual Shipper? Shipper { get; set; }
+        public virtual UserDetail? User { get; set; }
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }
     }
 }

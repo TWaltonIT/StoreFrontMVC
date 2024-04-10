@@ -1,0 +1,122 @@
+﻿@*
+    SHOPPING CART - STEP 09
+    - Create a new View for the ShoppingCart Index using an Empty Razor Template
+    - Add the model declaration, ViewData["Title"], and decimal?
+*@
+@model Dictionary<int, StoreFront.UI.MVC.Models.CartItemViewModel>
+
+@{
+    ViewData["Title"] = "Cart";
+    decimal? cartTotal = 0;
+}
+
+@*
+    SHOPPING CART - STEP 10
+    - Create the basic cart view
+    - We borrowed code from product.html in our original template (found in _Archive)
+*@
+
+<!-- product section -->
+<section class="product_section layout_padding text-center">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Your <span>Cart</span>
+            </h2>
+
+            <p align="center">
+                <a asp-action="TiledProducts" asp-controller="Products" class="btn btn-info">
+                    Continue Shopping
+                </a>
+            </p>
+        </div>
+        @if (Model.Count == 0)
+        {
+          <p class="alert alert-warning text-center">
+              @ViewBag.Message
+            </p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Quantity</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th></th> @* Left empty for actions*@
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="~/images/t_@item.Value.Product.ProductImage" alt="@item.Value.Product.ProductName" />
+                            </td>
+                            <td>
+                                <form asp-action="UpdateCart">
+                                    <input type="hidden" name="productId" value="@item.Key" />
+                                    <input type="text" name="qty" value="@item.Value.Qty" class="form-control d-block mx-auto text-center w-50" />
+                                    <input type="submit" value="Update Cart" class="btn btn-primary btn-sm" />
+                                </form>
+                            </td>
+                            <td>
+                                @item.Value.Product.ProductName
+                            </td>
+                            <td>
+                                @* Below we use the HTML helper to include the currency formatting from our Metadata*@
+                                @Html.DisplayFor(modelItem => item.Value.Product.ProductPrice)
+                                @*
+                                    Alternatively, we could have formatted the price manually:
+                                    @string.Format($"{item.Value.Product.ProductPrice:c}")
+                                *@
+                            </td>
+                            <td>
+                                
+                                @{
+                                    //Calculate the line total and the cart total
+                                    //line total will be displayed here for each individual line item
+                                    //cart total will be displayed after all of the line items
+
+                                    decimal? lineTotal = item.Value.Qty * item.Value.Product.ProductPrice;//Total for ONE line item
+                                    cartTotal += lineTotal;//Total for ALL items
+                                }
+                                @string.Format($"{lineTotal:c}")
+                            </td>
+                            <td>
+                                <a asp-action="RemoveFromCart" asp-controller="ShoppingCart" asp-route-id="@item.Key" class="btn btn-danger">Remove From Cart</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="alert alert-success text-center">
+                <p>
+                    Your total before taxes and shipping is @string.Format($"{cartTotal:c}")
+                </p>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <p>
+                        <a asp-action="SubmitOrder" class="btn btn-success">
+                            Submit Order
+                        </a>
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        To place this order, you must be logged in!
+                    </p>
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                }
+            </div>
+        }
+
+    </div>
+</section>
+<!-- end product section -->

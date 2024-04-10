@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,18 +15,32 @@ namespace StoreFront.UI.MVC.Controllers
     public class OrdersController : Controller
     {
         private readonly KonohaExpressContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public OrdersController(KonohaExpressContext context)
+        public OrdersController(KonohaExpressContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Orders
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var konohaExpressContext = _context.Orders.Include(o => o.Shipper).Include(o => o.User);
-            return View(await konohaExpressContext.ToListAsync());
+            if (User.IsInRole("Admin"))
+            {
+                var gadgetStoreContext = _context.Orders.Include(o => o.User);
+                return View(await gadgetStoreContext.ToListAsync());
+            }
+            else
+            {
+                //Get current user's ID
+                string? userId = (await _userManager.GetUserAsync(User))?.Id;
+
+                //User LINQ to filter results based only on orders for that user
+                var gadgetStoreContext = _context.Orders.Where(o => o.UserId == userId).Include(o => o.User);
+                return View(await gadgetStoreContext.ToListAsync());
+            }
         }
 
         // GET: Orders/Details/5
