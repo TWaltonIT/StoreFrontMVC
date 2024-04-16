@@ -29,8 +29,16 @@
     </div>
 </section>
 
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div id="MessageContent" class="text-center">
+
+        </div>
+    </div>
+</div>
+
 <section class="product_section pb-4 pt-4 mb-4">
-    <table class="table table-hover table-striped">
+    <table class="table table-hover table-striped" id="ProductsTable">
         <thead>
                 <tr>
                     <th>
@@ -81,14 +89,12 @@
 
             @foreach (var item in Model) 
             {
-                <tr>
+                <tr id="Product-@item.ProductId">
                     <td>
                         <img src="~/img/t_@item.ProductImage" class="img-fluid" alt="@item.ProductName" />
                     </td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.ProductId">
-                            @Html.DisplayFor(modelItem => item.ProductName)
-                        </a>
+                        @Html.DisplayFor(modelItem => item.ProductName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ProductPrice)
@@ -120,31 +126,81 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <td>
-                        @Html.DisplayFor(modelItem => item.Supplier.SupplierName)
+                            @Html.DisplayFor(modelItem => item.Supplier.SupplierName)
                     </td>
-                
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-
-                        @if (item.OrderProducts.Count() == 0)//item.OrderProducts retrieves any related records for the Product
-                        {
-                            <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
-                        }
-                        else
-                        {
-                            <a disabled="true" class="text-danger" style="text-decoration: line-through;" title="Can't delete - referenced by other records">Delete</a>
-                        }
-                        </td>
                 }
+                    <td>
+
+                        <button type="button" class="DetailsLink btn btn-link btn-success" id="@item.ProductId" data-toggle="modal" data-target="#ProductDetails">
+                            Details
+                        </button>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a>
+                            
+
+                @if(item.OrderProducts.Count() == 0)//item.OrderProducts retrieves any related records for the Product
+                {
+                                <a data-ajax="true" data-ajax-confirm="Are you sure you want to delete @item.ProductName?"
+                                   data-ajax-failure="deleteFailed" data-ajax-success="deleteConfirmed" data-ajax-method="POST"
+                                   href="~/Products/AjaxDelete/@item.ProductId">
+                                    Delete
+                                </a>
+                }
+                else
+                {
+                    <a disabled="true" class="text-danger" style="text-decoration: line-through;" title="Can't delete - referenced by other records">Delete</a>
+                }
+                }
+                    </td>
                     </tr>
             }
         </tbody>
     </table>
 </section>
+
+<div class="modal fade" id="ProductDetails" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+            </div>
+            <div class="modal-body" id="DetailsBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts {
     <script>
         $(document).ready(function () {
-            //Update the selector to target the element with the table class
+            
             $('.table').DataTable();
-        });</script>
+        });
+       
+        function deleteConfirmed(response, status, data) {
+            
+            let rowId = "#Product-" + response.id;
+            console.log(rowId);
+            $("#ProductsTable").find(rowId).remove();
+
+            
+            $("#MessageContent").html("<div class='alert alert-success'>" + response.message + "</div>");
+        }
+
+        function deleteFailed(response, status, data) {
+            
+            $("#MessageContent").html("<div class='alert alert-danger'>Delete unsuccessful.</div>");
+        }
+
+       
+        $(".DetailsLink").on("click", function (e) {
+            let prodId = $(this).attr("id");
+            $("#DetailsBody").load("/Products/ProductDetails/" + prodId);
+        });
+
+    </script>
 }

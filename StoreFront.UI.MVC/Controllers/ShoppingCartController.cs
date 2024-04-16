@@ -198,7 +198,8 @@ namespace StoreFront.UI.MVC.Controllers
                 UserId = userId,
                 OrderDate = DateTime.Now,
                 ShipToName = ud.FirstName + " " + ud.LastName,
-                ShipVillage = ud.Village
+                ShipVillage = ud.Village,
+                ShipperId = 12
             };
 
             //Add the Order to our _context

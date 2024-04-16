@@ -102,27 +102,23 @@ namespace StoreFront.UI.MVC.Controllers
             return View( products.ToPagedList(page , pageSize));
         }
 
-        // GET: Products/Details/5
-        [AllowAnonymous]
-        public async Task<IActionResult> Details(int? id)
+        [AcceptVerbs("POST")]
+        
+        public JsonResult AjaxDelete(int id)
         {
-            if (id == null || _context.Products == null)
-            {
-                return NotFound();
-            }
+            Product product = _context.Products.Find(id);
+            _context.Products.Remove(product);
+            _context.SaveChanges();
 
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Nature)
-                .Include(p => p.ProductStatus)
-                .Include(p => p.Supplier)
-                .FirstOrDefaultAsync(m => m.ProductId == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+            string confirmMessage = $"Deleted the product {product.ProductName} from the database!";
+            return Json(new { id = id, message = confirmMessage });
+        }
 
-            return View(product);
+        [AllowAnonymous]
+        public PartialViewResult ProductDetails(int id)
+        {
+            var product = _context.Products.Find(id);
+            return PartialView(product);
         }
 
         // GET: Products/Create
@@ -322,46 +318,46 @@ namespace StoreFront.UI.MVC.Controllers
             return View(product);
         }
 
-        // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Products == null)
-            {
-                return NotFound();
-            }
+        //// GET: Products/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null || _context.Products == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Nature)
-                .Include(p => p.ProductStatus)
-                .Include(p => p.Supplier)
-                .FirstOrDefaultAsync(m => m.ProductId == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+        //    var product = await _context.Products
+        //        .Include(p => p.Category)
+        //        .Include(p => p.Nature)
+        //        .Include(p => p.ProductStatus)
+        //        .Include(p => p.Supplier)
+        //        .FirstOrDefaultAsync(m => m.ProductId == id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(product);
-        }
+        //    return View(product);
+        //}
 
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Products == null)
-            {
-                return Problem("Entity set 'KonohaExpressContext.Products'  is null.");
-            }
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-            }
+        //// POST: Products/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    if (_context.Products == null)
+        //    {
+        //        return Problem("Entity set 'KonohaExpressContext.Products'  is null.");
+        //    }
+        //    var product = await _context.Products.FindAsync(id);
+        //    if (product != null)
+        //    {
+        //        _context.Products.Remove(product);
+        //    }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool ProductExists(int id)
         {

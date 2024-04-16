@@ -47,18 +47,21 @@
                     </p>
                 }
             </div>
+            <br />
+            <br />
+            <br />
 
             @foreach (var item in Model)
             {
                 <div class="col-sm-6 col-md-4 col-lg-4">
                     <div class="single-product">
-                        <img class="img-fluid" src="~/img/product/e-p1.png" alt="@item.ProductName">
+                        <img class="img-fluid" src="~/img/t_@item.ProductImage" alt="@item.ProductName">
                         <div class="product-details">
                             <h6>
 
-                                <a asp-action="Details" asp-route-id="@item.ProductId" class="option1">
+                                <button type="button" class="DetailsLink btn btn-link" id="@item.ProductId" data-toggle="modal" data-target="#ProductDetails">
                                     @item.ProductName
-                                </a>
+                                </button>
                             </h6>
                             <div class="price">
                                 <h6>
@@ -90,3 +93,27 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="ProductDetails" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+            </div>
+            <div class="modal-body" id="DetailsBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script> 
+        $(".DetailsLink").on("click", function (e) {
+            let prodId = $(this).attr("id");
+            $("#DetailsBody").load("/Products/ProductDetails/" + prodId);
+        });
+    </script>
+   
+}
